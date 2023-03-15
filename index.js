@@ -24,7 +24,7 @@ const makeGameBoard = (() => {
         },
 
         placeMarker (x) {
-            if (!x.classList.contains('checked') && this.gameLogic() === false) {
+            if (this.gameLogic() === false) {
                 x.classList.add('fa-solid', this.currentMark, 'checked');
                 this.gameLogic() === false? this.currentMarkSetter(): null;
             };
@@ -53,17 +53,19 @@ const AI = (() => {
 
         makeAIMoveAndPush () {
             let randNum;
+
             while (!randNum) {
-                let x = Math.floor(Math.random() * 9);
+                const x = Math.floor(Math.random() * 9);
                 if (!this.invalid.includes(x)) {
                     randNum = x;
-                    this.invalid.push(x);
-                    console.log(x);
+                    this.invalid.push(randNum);
+                    return randNum;
                 }
 
-                else if (this.range.every(item => this.invalid.includes(item))) break;
-                return randNum;
-            }
+                if (this.range.every(item => this.invalid.includes(item))) {
+                    return false;
+                };
+            };
         },
 
         placeAIMarker () {
@@ -74,12 +76,14 @@ const AI = (() => {
 
 
 makeGameBoard.cells.forEach(cell => cell.addEventListener('click', (e) => {
-    makeGameBoard.placeMarker(e.target);
+    if (!e.target.classList.contains('checked')) {
+        makeGameBoard.placeMarker(e.target);
 
     if (makeGameBoard.gameLogic() === false) {
         let cellIndex = Array.prototype.indexOf.call(makeGameBoard.cells, cell);
 
         makeGameBoard.pushPlayerIndex(cellIndex);
         AI.placeAIMarker();
+    }
     }
 }));
