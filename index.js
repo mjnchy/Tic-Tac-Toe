@@ -14,10 +14,26 @@ const makeGameBoard = (() => {
         range: [0,1,2,3,4,5,6,7,8],
 
         invalid: [],
-
-        currentMark: 'fa-xmark',
-
+        
         cells: document.querySelectorAll('.cell'),
+
+        currentMark: (function () {
+            let currentMark;
+            let playerMark = prompt('Chose X or O');
+
+            let inpValid = false;
+
+            while(inpValid === false) {
+                if (playerMark.toLocaleLowerCase() === 'x' || playerMark.toLocaleLowerCase() === 'o') {
+                    inpValid = true;
+                }
+
+                else playerMark = prompt('Please Chose X or O');
+            };
+
+            playerMark === 'x'? currentMark = 'fa-xmark': currentMark = 'fa-o';
+            return currentMark;
+        })(),
 
         currentMarkSetter () {
             this.currentMark === 'fa-xmark'? this.currentMark = 'fa-o': this.currentMark = 'fa-xmark';
