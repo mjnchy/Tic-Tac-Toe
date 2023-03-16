@@ -85,7 +85,9 @@ const AI = (() => {
         },
 
         placeAIMarker () {
-            makeGameBoard.placeMarker(makeGameBoard.cells[this.makeAIMoveAndPush()]);
+            setTimeout(() => {
+                makeGameBoard.placeMarker(makeGameBoard.cells[this.makeAIMoveAndPush()]);
+            }, 250)
         }
     }
 })();
